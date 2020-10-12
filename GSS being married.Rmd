@@ -1,0 +1,31 @@
+---
+title: "GSS Analysis"
+author: "Fadlan Arif and Kar Hian"
+date: "12/10/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r initial, include=FALSE}
+#install.packages("data.table")
+#install.packages("tidyverse")
+#install.packages("dplyr")
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(data.table)
+
+
+raw_data <- read.csv("gss.csv")
+raw_data <- raw_data %>% mutate(bin_evermarried = if_else(ever_married == "Yes", 1, 0))
+
+focused_data <- raw_data %>% select("bin_evermarried", "sex", "age", "education", "regilion_importance") %>% filter(!is.na(sex), !is.na(age), !is.na(education),
+                                                                                                 !is.na(regilion_importance), !is.na(bin_evermarried))
+
+first_logit <- glm(bin_evermarried ~ sex + age + education + regilion_importance, data = focused_data, family = "binomial")
+summary(first_logit)
+
+```
