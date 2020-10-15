@@ -1,15 +1,14 @@
 ---
 title: "GSS Analysis"
 author: "Fadlan Arif and Kar Hian"
+abstract: "What is life. I don't really know. please send help."
 date: "12/10/2020"
+bibliography: "references.bib"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r initial, include=FALSE}
 #install.packages("data.table")
 #install.packages("tidyverse")
 #install.packages("dplyr")
@@ -17,15 +16,107 @@ library(ggplot2)
 library(dplyr)
 library(tidyverse)
 library(data.table)
+```
 
+We use @citer, @citeggplot2
+
+# Introduction
+
+# Data
+
+# Model
+
+Below is graph.
+
+
+```{r, echo = FALSE}
 
 raw_data <- read.csv("gss.csv")
 raw_data <- raw_data %>% mutate(bin_evermarried = if_else(ever_married == "Yes", 1, 0))
 
-focused_data <- raw_data %>% select("bin_evermarried", "sex", "age", "education", "regilion_importance") %>% filter(!is.na(sex), !is.na(age), !is.na(education),
-                                                                                                 !is.na(regilion_importance), !is.na(bin_evermarried))
+focused_data <- raw_data %>% select("ever_married", "bin_evermarried", "sex", "age", "education", "regilion_importance") %>% filter(!is.na(sex), !is.na(age), !is.na(education), !is.na(regilion_importance), !is.na(bin_evermarried), !is.na(ever_married))
 
-first_logit <- glm(bin_evermarried ~ sex + age + education + regilion_importance, data = focused_data, family = "binomial")
-summary(first_logit)
+first_logit <- glm(bin_evermarried ~ sex + age + education, data = focused_data, na.action="na.exclude", family = "binomial")
+
+b0 <- first_logit$coef[1] #intercept
+sexMale <- first_logit$coef[2]
+age  <- first_logit$coef[3]
+educationCollege  <- first_logit$coef[4]
+educationHighSchool  <- first_logit$coef[5]
+educationLessThanHighSchool  <- first_logit$coef[6]
+educationTrade  <- first_logit$coef[7]
+educationUniversity <- first_logit$coef[8]
+educationLessThanUniversity  <- first_logit$coef[9]
+
+age_range <- seq(from=min(focused_data$age), to=max(focused_data$age), by=0.1)
+
+a_logits <- b0 + age*age_range + sexMale*1+ educationCollege*0 + educationHighSchool*0 +
+            educationLessThanHighSchool*0 + educationTrade*0 + educationUniversity*0 +
+            educationLessThanUniversity*0
+
+b_logits <- b0 + age*age_range + sexMale*1+ educationCollege*1 + educationHighSchool*0 +
+  educationLessThanHighSchool*0 + educationTrade*0 + educationUniversity*0 +
+  educationLessThanUniversity*0
+
+c_logits <- b0 + age*age_range + sexMale*1+ educationCollege*0 + educationHighSchool*1 +
+  educationLessThanHighSchool*0 + educationTrade*0 + educationUniversity*0 +
+  educationLessThanUniversity*0
+
+d_logits <- b0 + age*age_range + sexMale*1+ educationCollege*0 + educationHighSchool*0 +
+  educationLessThanHighSchool*1 + educationTrade*0 + educationUniversity*0 +
+  educationLessThanUniversity*0
+
+e_logits <- b0 + age*age_range + sexMale*1+ educationCollege*0 + educationHighSchool*0 +
+  educationLessThanHighSchool*0 + educationTrade*1 + educationUniversity*0 +
+  educationLessThanUniversity*0
+
+f_logits <- b0 + age*age_range + sexMale*1+ educationCollege*0 + educationHighSchool*0 +
+  educationLessThanHighSchool*0 + educationTrade*0 + educationUniversity*1 +
+  educationLessThanUniversity*0
+
+g_logits <- b0 + age*age_range + sexMale*1+ educationCollege*0 + educationHighSchool*0 +
+  educationLessThanHighSchool*0 + educationTrade*0 + educationUniversity*0 +
+  educationLessThanUniversity*1
+
+a_probs <- exp(a_logits)/(1 + exp(a_logits))
+b_probs <- exp(b_logits)/(1 + exp(b_logits))
+c_probs <- exp(c_logits)/(1 + exp(c_logits))
+d_probs <- exp(d_logits)/(1 + exp(d_logits))
+e_probs <- exp(e_logits)/(1 + exp(e_logits))
+f_probs <- exp(f_logits)/(1 + exp(f_logits))
+g_probs <- exp(g_logits)/(1 + exp(g_logits))
+```
+
+```{r model1, fig.cap="Logistic Regression Model", echo = FALSE}
+plot.data <- data.frame(A=a_probs, B= b_probs, C=c_probs, D=d_probs, E=e_probs, F=f_probs, G=g_probs, Age=age_range)
+plot.data <- gather(plot.data, key=group, value=prob, A:G)
+ggplot(plot.data, aes(x=Age, y= prob, color= group)) + # asking it to set the color by the variable "group" is what makes it draw three different lines
+  geom_line(lwd=1, lty=1) +
+  labs(x="Age", y="Probability", title="Probability of being Married by Age and Education Level", color= "Level of Education")
+
 
 ```
+
+Levels of Education:
+
+A: Bachelor's degree (e.g. B.A., B.Sc., LL.B.)
+
+B: College, CEGEP or other non-university certificate or diploma
+
+C: High school diploma or a high school equivalency certificate
+
+D: Less than high school diploma or its equivalent
+
+E: Trade certificate or diploma
+
+F: University certificate or diploma below the bachelor's level
+
+G: University certificate, diploma or degree above the bachelor's
+
+# Results
+
+# Discussion
+
+# Weaknesses
+
+# References
