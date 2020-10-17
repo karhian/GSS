@@ -33,6 +33,12 @@ With this data we see a general trend from all the curves that the probability o
 
 
 # Data
+The data for this analysis is sourced from Canadian General social survey (GSS) through University of Toronto library. The GSS collects infomation from persons aged 15 and over in 10 provinces of Canada, excluding full-time residents of institutions. The target sample size of the GSS is 20,000 respondents. The GSS uses Statistics Canada's common telephone frame, which combines landline and cellular telephone numbers from Address Register, Census of Population and various administarive sources and which has been integrated with Statistics Canada's common dwelling frame. 
+
+The data is collected using a combination of self completed online questionnairs and telephone interviews(@citeGSSoverview).Most often income data, are drawn from tax or other administrative files rather than direct survey questions in order to reduce respondent burden and to improve data accuracy. The GSS also uses Age-Order method to select a respondent within a household through an invitation letter rather than the traditional household rostering method.The methods for data collection for the GSS is ever changing to keep up with the times to reduce non-response. The GSS uses a two stage sampling design.  The sampling units are the groups of telephone numbers. The final stage units are individuals within the identified households. Survey estimates will be adjusted to account for non-response cases(@citenonresponse).
+
+The key features of the GSS is that is covers a wide variaty of themes such as Canadians at Work and Home, Family, Caregiving and Care Receiving, Giving, Volunteering and Participating, Victimization, Social Identity, and Time Use. Since the survey is conducted by statistics Canada, this survey is able to capture the general population of Canada.
+
 We first read in the cleaned data from gss.csv. Our variables of interest were 'ever_married', 'sex', 'age' and 'education'.From there, we mutated the data set to create binary values for the 'ever_married' data, with a 'Yes' equalling 1 and a 'No' equalling 0. This new column of data was called 'bin_evermarried'. Afterwards we created a new dataset, selecting only our variables of interest and the new 'bin_evermarried' column. We also filtered out the non-responses, leaving us with only the responses with these variables filled in. 
 ```{r, echo = FALSE}
 raw_data <- read.csv("gss.csv")
