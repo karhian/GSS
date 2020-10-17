@@ -188,13 +188,14 @@ focused_data %>%
 # group ages into age groups
 focused_data <- focused_data %>% 
   # Put the ages into age groups. Any decimal point in age will round down to the nearest integer
-  mutate(age_range = case_when(floor(age) > 60 ~ "Above 60",
-                              floor(age) >= 50 & floor(age) <= 60 ~ "50-60",
+  mutate(age_range = case_when(floor(age) >=70 ~ "Above 70",
+                              floor(age) >= 60 & floor(age) <=69 ~ "60-69",
+                              floor(age) >= 50 & floor(age) <= 59 ~ "50-59",
                               floor(age >= 40)  & floor(age) <= 49 ~ "40-49",
                               floor(age) >= 30  & floor(age) <= 39 ~ "30-39",
                               floor(age) >= 18  & floor(age) <= 29 ~ "18-29",
                               floor(age) < 18 ~ "Below 18"))
-focused_data$age_range <- factor(focused_data$age_range,levels =c("Below 18", "18-29", "30-39", "40-49", "50-60","Above 60"),ordered = TRUE) #order the input so that the bar chart is in order
+focused_data$age_range <- factor(focused_data$age_range,levels =c("Below 18", "18-29", "30-39", "40-49", "50-59","60-69","Above 70"),ordered = TRUE) #order the input so that the bar chart is in order
 
 # bar chart of age groups
 focused_data %>%
