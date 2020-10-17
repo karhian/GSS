@@ -224,4 +224,9 @@ points to discuss
 # Weaknesses
 Possible weaknesses in this paper lie within the scope of our data set. Inaccuracy could occur sue to only taking two variables into consideration while many others werre left out. This was done as a measure to lower complexity but could also be seen as a point of weakness as more variables would increase its accuracy.
 
+# Note
+```{r}
+# Code and data supporting this analysis is available at: https://github.com/karhian/GSS
+```
+
 # References
