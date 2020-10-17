@@ -178,7 +178,7 @@ ggplot(plot.data, aes(x=Age, y= prob, color= group)) + # asking it to set the co
 focused_data %>%
   group_by(sex) %>%
   summarize(percentage=n()/nrow(focused_data)) %>%
-  ggplot(aes(x="",y=percentage,fill=sex))+ geom_bar(stat="identity") + coord_polar("y", start=0) +theme(axis.text.x=element_blank(),
+  ggplot(aes(x="",y=percentage,fill=sex))+ geom_bar(stat="identity",colour="black") + coord_polar("y", start=0) +theme(axis.text.x=element_blank(),
         axis.title =element_blank())+ ggtitle("Figure 2: Sex distribution of respondents") + 
    geom_text(aes(label=paste0(round(percentage*100),"%")),position = position_stack(vjust=0.5), fill )
   
@@ -199,13 +199,13 @@ focused_data$age_range <- factor(focused_data$age_range,levels =c("Below 18", "1
 
 # bar chart of age groups
 focused_data %>%
-  ggplot()+ geom_bar(aes(age_range,fill =age_range)) + labs(x="Age groups",fill="Age groups") +  ggtitle("Figure 3: Age groups of respondents")
+  ggplot()+ geom_bar(aes(age_range,fill =age_range),colour="black") + labs(x="Age groups",fill="Age groups") +  ggtitle("Figure 3: Age groups of respondents")
 ```
 
 ```{r echo =FALSE}
 #bar charts of level of education
 focused_data %>%
-  ggplot() + geom_bar(aes(education,fill=education)) + theme(axis.text.x=element_blank(),legend.position = "bottom",legend.direction = "vertical") + scale_fill_discrete(labels = c("Bachelor's degree (e.g. B.A., B.Sc., LL.B.)", "College, CEGEP or other non-university certificate or diploma", "High school diploma or a high school equivalency certificate","Less than high school diploma or its equivalent","Trade certificate or diploma","University certificate or diploma below the bachelor's level","University certificate, diploma or degree above the bachelor's")) + ggtitle("Figure 4: Level of education of respondents") + labs(x="Education",fill="Education")
+  ggplot() + geom_bar(aes(education,fill=education),colour="black") + theme(axis.text.x=element_blank(),legend.position = "bottom",legend.direction = "vertical") + scale_fill_discrete(labels = c("Bachelor's degree (e.g. B.A., B.Sc., LL.B.)", "College, CEGEP or other non-university certificate or diploma", "High school diploma or a high school equivalency certificate","Less than high school diploma or its equivalent","Trade certificate or diploma","University certificate or diploma below the bachelor's level","University certificate, diploma or degree above the bachelor's")) + ggtitle("Figure 4: Level of education of respondents") + labs(x="Education",fill="Education")
 ```
 
 
