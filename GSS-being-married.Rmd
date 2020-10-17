@@ -63,6 +63,7 @@ educationTrade  <- first_logit$coef[7]
 educationUniversity <- first_logit$coef[8]
 educationLessThanUniversity  <- first_logit$coef[9]
 ```
+
 We then called onto the summary(first_logit) function to retrieve all the needed coefficients and assigned simpler variable names to each value to form our regression formula:
 
 * Intercept = -2.669
@@ -83,15 +84,18 @@ We then called onto the summary(first_logit) function to retrieve all the needed
 
 * educationLessThanUniversity = 0.125
 
-
-\begin{align*} log(\frac{p}{1-p})= Intercept +sexMale(x_1) + age(x_2) + educationCollege(x_3) + \\ educationHighSchool(x_4) +
+\begin{equation}
+\begin{gathered} 
+log(\frac{p}{1-p})= Intercept +sexMale(x_1) + age(x_2) + educationCollege(x_3) + \\ educationHighSchool(x_4) +
 educationLessThanHighSchool(x_5) + educationTrade(x_6) + 
-\\ educationUniversity(x_7) + educationLessThanUniversity(x_8) \end{align*}
-
-
+\\ educationUniversity(x_7) + educationLessThanUniversity(x_8)
+\end{gathered}\label{eq:2}
+\end{equation}
 
 Then when placing the coefficients in:
-$$ log(\frac{p}{1-p})= -2.669 - 0.247x_1 + 0.079x_2 - 0.069x_3 - 0.324x_4 - 0.669x_5 - 0.207x_6 - 0.022x_7 + 0.125x_8 $$
+\begin{equation}
+log(\frac{p}{1-p})= -2.669 - 0.247x_1 + 0.079x_2 - 0.069x_3 - 0.324x_4 - 0.669x_5 - 0.207x_6 - 0.022x_7 + 0.125x_8 \label{eq:3}
+\end{equation}
 \
 When modeeling the equations $x_1$ is always 'on'($x_1=1$) since we are looking into only males, $x_2$ is the age and $x_3 - x_8$ are all dummy variables. This mean  when one is active (the corresponding $x=1$), the others are all 0. When looking for our first curve for the education level: 'Bachelor's degree (e.g. B.A., B.Sc., LL.B.)', we set $x_3-x_8$ to 0 as they represent the other six levels education. Below we show how we constrcuted the model from the given equation.
 
@@ -168,10 +172,41 @@ ggplot(plot.data, aes(x=Age, y= prob, color= group)) + # asking it to set the co
 
 
 # Results
-what graphs to put in
-- pie chart of sex distribution
-- bar chart of age groups
-- bar charts of level of education
+
+```{r,echo =FALSE,message=FALSE}
+# pie chart of sex distribution
+focused_data %>%
+  group_by(sex) %>%
+  summarize(percentage=n()/nrow(focused_data)) %>%
+  ggplot(aes(x="",y=percentage,fill=sex))+ geom_bar(stat="identity") + coord_polar("y", start=0) +theme(axis.text.x=element_blank(),
+        axis.title =element_blank())+ ggtitle("Figure 2: Sex distribution of respondents") + 
+   geom_text(aes(label=paste0(round(percentage*100),"%")),position = position_stack(vjust=0.5), fill )
+  
+```
+
+```{r echo =FALSE}
+# group ages into age groups
+focused_data <- focused_data %>% 
+  # Put the ages into age groups. Any decimal point in age will round down to the nearest integer
+  mutate(age_range = case_when(floor(age) > 60 ~ "Above 60",
+                              floor(age) >= 50 & floor(age) <= 60 ~ "50-60",
+                              floor(age >= 40)  & floor(age) <= 49 ~ "40-49",
+                              floor(age) >= 30  & floor(age) <= 39 ~ "30-39",
+                              floor(age) >= 18  & floor(age) <= 29 ~ "18-29",
+                              floor(age) < 18 ~ "Below 18"))
+focused_data$age_range <- factor(focused_data$age_range,levels =c("Below 18", "18-29", "30-39", "40-49", "50-60","Above 60"),ordered = TRUE) #order the input so that the bar chart is in order
+
+# bar chart of age groups
+focused_data %>%
+  ggplot()+ geom_bar(aes(age_range,fill =age_range)) + labs(x="Age groups",fill="Age groups") +  ggtitle("Figure 3: Age groups of respondents")
+```
+
+```{r echo =FALSE}
+#bar charts of level of education
+focused_data %>%
+  ggplot() + geom_bar(aes(education,fill=education)) + theme(axis.text.x=element_blank(),legend.position = "bottom",legend.direction = "vertical") + scale_fill_discrete(labels = c("Bachelor's degree (e.g. B.A., B.Sc., LL.B.)", "College, CEGEP or other non-university certificate or diploma", "High school diploma or a high school equivalency certificate","Less than high school diploma or its equivalent","Trade certificate or diploma","University certificate or diploma below the bachelor's level","University certificate, diploma or degree above the bachelor's")) + ggtitle("Figure 4: Level of education of respondents") + labs(x="Education",fill="Education")
+```
+
 
 # Discussion
 
