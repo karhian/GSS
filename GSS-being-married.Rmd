@@ -193,9 +193,9 @@ focused_data <- focused_data %>%
                               floor(age) >= 50 & floor(age) <= 59 ~ "50-59",
                               floor(age >= 40)  & floor(age) <= 49 ~ "40-49",
                               floor(age) >= 30  & floor(age) <= 39 ~ "30-39",
-                              floor(age) >= 18  & floor(age) <= 29 ~ "18-29",
-                              floor(age) < 18 ~ "Below 18"))
-focused_data$age_range <- factor(focused_data$age_range,levels =c("Below 18", "18-29", "30-39", "40-49", "50-59","60-69","Above 70"),ordered = TRUE) #order the input so that the bar chart is in order
+                              floor(age) >= 15  & floor(age) <= 29 ~ "15-29",
+                              ))
+focused_data$age_range <- factor(focused_data$age_range,levels =c("15-29", "30-39", "40-49", "50-59","60-69","Above 70"),ordered = TRUE) #order the input so that the bar chart is in order
 
 # bar chart of age groups
 focused_data %>%
