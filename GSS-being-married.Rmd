@@ -30,7 +30,7 @@ Our approach within this paper was to find a binary way to classify all our data
 
 \begin{align}log(\frac{p}{1-p})= B_0 + B_1x_1 + ... +B_kx_k\end{align}
 
-Where *p* is the probability that the event of interest occuring (marriage), $B_0$ is the y-intercept and $B_i, 1\leq i\leq k,$ coefficient represents change in log odds for one unit increase in $x_i$.
+Where *p* is the probability that the event of interest occurring (marriage), $B_0$ is the y-intercept and $B_i, 1\leq i\leq k,$ coefficient represents change in log odds for one unit increase in $x_i$.
 
 With this data we see a general trend from all the curves that the probability of being married increases with age. They all have a similar 'S' shape increasing more towards the higher age. the main difference between these curves is their placement on the y-axis. They seem to almost be the same curves but shifted up and down. This is from the differing levels of education. We can see that those with the lowest probability of being married, are the ones with 'Less than high school diploma or its equivalent', while the ones with the highest probability of marriage is 'University certificate, diploma or degree above the bachelor’s'. This is interesting as they are on two ends of the spectrum when looking at education levels. Through analysing the data, creating models, graphs, and charts, and discussing the results, we examine the reason for such an occurrence.
 
@@ -38,7 +38,7 @@ With this data we see a general trend from all the curves that the probability o
 # Data
 The data for this analysis is sourced from Canadian General social survey (GSS) through the University of Toronto library. The GSS collects information from persons aged 15 and over in 10 provinces of Canada, excluding full-time residents of institutions. The target sample size of the GSS is 20,000 respondents. The GSS uses Statistics Canada's common telephone frame, which combines landline and cellular telephone numbers from Address Register, Census of Population and various administrative sources which have been integrated with Statistics Canada's common dwelling frame. 
 
-The data is collected using a combination of self completed online questionnaires and telephone interviews(@citeGSSoverview). Most often income data, are drawn from tax or other administrative files rather than direct survey questions in order to reduce respondent burden and to improve data accuracy. The GSS also uses Age-Order method to select a respondent within a household through an invitation letter rather than the traditional household rostering method. The methods for data collection for the GSS is ever changing to keep up with the times to reduce non-response. The GSS uses a two-stage sampling design.  The sampling units are the groups of telephone numbers. The final stage units are individuals within the identified households. Survey estimates will be adjusted to account for non-response cases (@citenonresponse).
+The data is collected using a combination of self completed online questionnaires and telephone interviews(@citeGSSoverview). Most often income data, are drawn from tax or other administrative files rather than direct survey questions to reduce respondent burden and to improve data accuracy. The GSS also uses Age-Order method to select a respondent within a household through an invitation letter rather than the traditional household rostering method. The methods for data collection for the GSS are ever changing to keep up with the times to reduce non-response. The GSS uses a two-stage sampling design.  The sampling units are the groups of telephone numbers. The final stage units are individuals within the identified households. Survey estimates will be adjusted to account for non-response cases (@citenonresponse).
 
 The key features of the GSS it that is covers a wide variety of themes such as Canadians at Work and Home, Family, Caregiving and Care Receiving, Giving, Volunteering and Participating, Victimization, Social Identity, and Time Use. Since the survey is conducted by statistics Canada, this survey can capture the general population of Canada.
 
@@ -226,7 +226,6 @@ g1 <- focused_data %>%
   ggplot(aes(x="",y=percentage,fill=sex))+ geom_bar(stat="identity",colour="black") + coord_polar("y", start=0) +theme(axis.text.x=element_blank(),
         axis.title =element_blank())+ ggtitle("Figure 2: Sex distribution of respondents") + 
    geom_text(aes(label=paste0(round(percentage*100),"%")),position = position_stack(vjust=0.5), fill )
-  #theme(plot.margin = unit(c(1,1,1,1),"cm"))
 
   
 ```
@@ -246,7 +245,7 @@ focused_data$age_range <- factor(focused_data$age_range,levels =c("15-29", "30-3
 
 # bar chart of age groups
 g2<- focused_data %>%
-  ggplot()+ geom_bar(aes(age_range,fill =age_range),colour="black") + labs(x="Age groups",fill="Age groups") +  ggtitle("Figure 3: Age groups of respondents")  #theme(plot.margin = unit(c(1,1,1,1),"cm"))
+  ggplot()+ geom_bar(aes(age_range,fill =age_range),colour="black") + labs(x="Age groups",fill="Age groups") +  ggtitle("Figure 3: Age groups of respondents")  
 grid.arrange(g1, g2, ncol = 1)
 
 ```
@@ -265,9 +264,9 @@ From examining Figure 4, we see that most of the respondents have education leve
 
 Looking at the Figure 1, we see the obvious trend that is, the older anyone is, the more likely they are to be married. This is a logical finding as people all over the world see marriage as a mandatory milestone in life and some even see it as the goal in life: settling down, having children, etc. So by logic, people will try to get married sometime in their life thus there being a higher probability of someone being married at an older age.
 
-Another trend also persists in this model, which may be hard to spot. That is, the higher the level of education for the male, the higher probability they are to be married through out all ages. We see that line **G** (University certificate, diploma or degree above the bachelor’s) at the top, followed by **A** (Bachelor’s degree (e.g. B.A., B.Sc., LL.B.)), then **F** (University certificate or diploma below the bachelor’s level), then **E** (Trade certificate or diploma), then **C** (High school diploma or a high school equivalency certificate), and **D** (Less than high school diploma or its equivalent). There are multiple reasons for this occurrence. One reason is that those with higher level of education, tend to have higher income and with that higher income, would be able to support marriage and everything that comes with it. While those with lower education levels such as no high school degree struggle to find jobs with a steady stream of income. This leads to instability within their lives and with this they tend to hesitate going into marriage. 
+Another trend also persists in this model, which may be hard to spot. That is, the higher the level of education for the male, the higher probability they are to be married through out all ages. We see that line **G** (University certificate, diploma or degree above the bachelor’s) at the top, followed by **A** (Bachelor’s degree (e.g. B.A., B.Sc., LL.B.)), then **F** (University certificate or diploma below the bachelor’s level), then **E** (Trade certificate or diploma), then **C** (High school diploma or a high school equivalency certificate), and **D** (Less than high school diploma or its equivalent). There are multiple reasons for this occurrence. One reason is that those with higher level of education, tend to have higher income and with that higher income, would be able to support marriage and everything that comes with it. While those with lower education levels such as no high school degree struggle to find jobs with a steady stream of income. This leads to instability within their lives and with this they tend to hesitate to go into marriage. 
 
-Another possibility for the difference in the curves is how towards the higher level of education, less people were sampled, or maybe of the people that were sampled, less had higher education. Whatever the case is, this lead to a lower variety of responses from these education levels and maybe leading to a skewed sample of what the actual probabilities are due to a small sample size.  
+Another possibility for the difference in the curves is how towards the higher level of education, less people were sampled, or maybe of the people that were sampled, less had higher education. Whatever the case is, this led to a lower variety of responses from these education levels and maybe leading to a skewed sample of what the actual probabilities are due to a small sample size.  
 
 
 # Weaknesses
